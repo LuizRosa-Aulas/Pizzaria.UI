@@ -6,6 +6,14 @@ Desenvolvida utilizando **HTML**, **CSS**, **Bootstrap** e **jQuery**, com foco 
 
 ---
 
+## 🌐 Demo Online
+
+A aplicação está disponível para testes em:
+
+👉 http://pizzaria.viniciusguedes.cloud
+
+---
+
 ## 🔗 Repositórios
 
 - 🔙 Backend (API):  
@@ -13,14 +21,6 @@ Desenvolvida utilizando **HTML**, **CSS**, **Bootstrap** e **jQuery**, com foco 
 
 - 🎨 Frontend (UI):  
 👉 https://github.com/LuizRosa-Aulas/Pizzaria.UI  
-
----
-
-## 🌐 Integração com API
-
-Esta aplicação consome a API disponível em:
-
-👉 http://pizzaria-api.viniciusguedes.cloud
 
 ---
 
