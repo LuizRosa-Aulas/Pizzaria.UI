@@ -1,0 +1,144 @@
+:root {
+    --cor-primaria: #d32f2f;
+    --cor-primaria-escura: #b71c1c;
+    --cor-fundo: #fafafa;
+    --cor-card: #ffffff;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ========== NAVBAR ========== */
+.navbar {
+    background-color: var(--cor-primaria) !important;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #ffffff !important;
+}
+
+/* ========== CONTEUDO ========== */
+.content {
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.page-header h2 {
+    color: var(--cor-primaria);
+    font-weight: 700;
+    margin: 0;
+}
+
+/* ========== TABELA ========== */
+.table thead {
+    background-color: var(--cor-primaria);
+    color: #fff;
+}
+
+.table tbody tr {
+    transition: background-color 0.15s;
+}
+
+.table tbody tr:hover {
+    background-color: #ffebee;
+}
+
+/* ========== BOTOES ========== */
+.btn-pizza {
+    background-color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    color: #fff;
+}
+
+.btn-pizza:hover {
+    background-color: var(--cor-primaria-escura);
+    border-color: var(--cor-primaria-escura);
+    color: #fff;
+}
+
+/* ========== MODAL ========== */
+.modal-header {
+    background-color: var(--cor-primaria);
+    color: #fff;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+/* ========== CARDS HOME ========== */
+.card-home {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-home:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-home .card-body {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.card-home .card-icon {
+    font-size: 3rem;
+    color: var(--cor-primaria);
+    margin-bottom: 15px;
+}
+
+.card-home .card-title {
+    font-weight: 700;
+    color: #333;
+}
+
+.card-home .card-text {
+    color: #777;
+}
+
+/* ========== LOADING ========== */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+}
+
+/* ========== FOOTER ========== */
+footer {
+    background-color: #333;
+    color: #aaa;
+    text-align: center;
+    padding: 15px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: 0.85rem;
+}

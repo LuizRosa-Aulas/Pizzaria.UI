@@ -1,0 +1,23 @@
+services:
+  pizzaria-ui:
+    image: nginx:alpine
+    container_name: pizzaria-ui
+    restart: unless-stopped
+    volumes:
+      - ./:/usr/share/nginx/html:ro
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+
+      # Router
+      - "traefik.http.routers.pizzaria-ui.rule=Host(`pizzaria.viniciusguedes.cloud`)"
+      - "traefik.http.routers.pizzaria-ui.entrypoints=websecure"
+      - "traefik.http.routers.pizzaria-ui.tls.certresolver=letsencrypt"
+
+      # Service
+      - "traefik.http.services.pizzaria-ui.loadbalancer.server.port=80"
+
+networks:
+  web:
+    external: true
