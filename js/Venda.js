@@ -70,6 +70,7 @@ var Venda = {
                     html += '<td>';
                     html += '<button class="btn btn-sm btn-warning me-1" onclick="Venda.Editar(' + venda.id + ')"><i class="bi bi-pencil"></i> Editar</button>';
                     html += '<button class="btn btn-sm btn-danger" onclick="Venda.Excluir(' + venda.id + ')"><i class="bi bi-trash"></i> Excluir</button>';
+                    html += Venda.BotaoStatus(venda);
                     html += '</td>';
                     html += '</tr>';
                 });
@@ -83,6 +84,19 @@ var Venda = {
             }
         });
     },
+    BotaoStatus:function(venda){
+        //venda.statusId = 2
+        //venda.nomeStatus = A caminho
+        var Botao = '';
+        Botao += '<select class="form-control btn-status">';
+        Botao += '<option value="1">Preparando</option>';
+        Botao += '<option value="2">A caminho</option>';
+        Botao += '<option value="3">Entregue</option>';
+        Botao += '</select>';
+    
+        return Botao;
+    },
+
 
     btnNovo_OnClick: function () {
         $('#formVenda')[0].reset();
