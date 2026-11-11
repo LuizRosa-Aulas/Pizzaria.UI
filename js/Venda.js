@@ -100,6 +100,19 @@ var Venda = {
         return html;
     },
 
+    AlterarStatus: function (id, statusId) {
+    $.ajax({
+        url: Config.API_URL + "/vendas/" + id + "/" + statusId,
+        method: "PUT",
+        success: function () {
+            // opcional: Venda.Listar();
+        },
+        error: function () {
+            alert('Erro ao atualizar o status');
+            Venda.Listar();
+        }
+    });
+},
 
     btnNovo_OnClick: function () {
         $('#formVenda')[0].reset();
