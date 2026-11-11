@@ -1,3 +1,3 @@
 var Config = {
-    API_URL: "http://localhost:5051/api"
+    API_URL: "https://pizzaria-api.viniciusguedes.cloud/api"
 };
