@@ -84,17 +84,20 @@ var Venda = {
             }
         });
     },
-    BotaoStatus:function(venda){
-        //venda.statusId = 2
-        //venda.nomeStatus = A caminho
-        var Botao = '';
-        Botao += '<select class="form-control btn-status">';
-        Botao += '<option value="1">Preparando</option>';
-        Botao += '<option value="2">A caminho</option>';
-        Botao += '<option value="3">Entregue</option>';
-        Botao += '</select>';
-    
-        return Botao;
+    BotaoStatus: function (venda) {
+        var opcoes = [
+            { id: '1', nome: 'Preparando' },
+            { id: '2', nome: 'A caminho' },
+            { id: '3', nome: 'Entregue' }
+        ];
+
+        var html = '<select class="form-control btn-status" onchange="Venda.AlterarStatus(' + venda.id + ', this.value)">';
+        $.each(opcoes, function (i, o) {
+            var selected = String(venda.statusId) === o.id ? ' selected' : '';
+            html += '<option value="' + o.id + '"' + selected + '>' + o.nome + '</option>';
+        });
+        html += '</select>';
+        return html;
     },
 
 
