@@ -70,6 +70,7 @@ var Venda = {
                     html += '<td>';
                     html += '<button class="btn btn-sm btn-warning me-1" onclick="Venda.Editar(' + venda.id + ')"><i class="bi bi-pencil"></i> Editar</button>';
                     html += '<button class="btn btn-sm btn-danger" onclick="Venda.Excluir(' + venda.id + ')"><i class="bi bi-trash"></i> Excluir</button>';
+                    html += Venda.BotaoStatus(venda);
                     html += '</td>';
                     html += '</tr>';
                 });
@@ -83,6 +84,35 @@ var Venda = {
             }
         });
     },
+    BotaoStatus: function (venda) {
+        var opcoes = [
+            { id: '1', nome: 'Preparando' },
+            { id: '2', nome: 'A caminho' },
+            { id: '3', nome: 'Entregue' }
+        ];
+
+        var html = '<select class="form-control btn-status" onchange="Venda.AlterarStatus(' + venda.id + ', this.value)">';
+        $.each(opcoes, function (i, o) {
+            var selected = String(venda.statusId) === o.id ? ' selected' : '';
+            html += '<option value="' + o.id + '"' + selected + '>' + o.nome + '</option>';
+        });
+        html += '</select>';
+        return html;
+    },
+
+    AlterarStatus: function (id, statusId) {
+    $.ajax({
+        url: Config.API_URL + "/vendas/" + id + "/" + statusId,
+        method: "PUT",
+        success: function () {
+            // opcional: Venda.Listar();
+        },
+        error: function () {
+            alert('Erro ao atualizar o status');
+            Venda.Listar();
+        }
+    });
+},
 
     btnNovo_OnClick: function () {
         $('#formVenda')[0].reset();
