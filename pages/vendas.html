@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -48,6 +47,8 @@
                         <th>ID</th>
                         <th>Usuario</th>
                         <th>Pizza</th>
+                        <th>Tipo</th>
+                        <th>Borda</th>
                         <th>Acompanhamentos</th>
                         <th>Qtd Pizza</th>
                         <th>Valor Total</th>
@@ -84,6 +85,20 @@
                         <div class="mb-3">
                             <label for="pizzaId" class="form-label">Pizza</label>
                             <select class="form-select" id="pizzaId">
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tipoId" class="form-label">Tipo da Pizza</label>
+                            <select class="form-select" id="tipoId">
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3" id="Borda" style="display: none;">
+                            <label for="bordaId" class="form-label">Borda</label>
+                            <select class="form-select" id="bordaId">
                                 <option value="">Selecione...</option>
                             </select>
                         </div>

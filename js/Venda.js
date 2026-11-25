@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     Venda.Init();
 });
@@ -6,6 +5,8 @@ $(document).ready(function () {
 var Venda = {
     _pizzas: [],
     _usuarios: [],
+    _tipo: [],
+    _borda: [],
     _acompanhamentos: [],
     _itensAcompanhamentos: [],
 
@@ -17,7 +18,22 @@ var Venda = {
         $('#btnAdicionarAcompanhamento').on('click', Venda.AdicionarAcompanhamento);
 
         $('#categoriaAcompanhamento').on('change', Venda.FiltrarAcompanhamentos);
-        $('#pizzaId, #quantidade').on('change', Venda.CalcularTotal);
+        $('#pizzaId, #quantidade, #tipoId, #bordaId').on('change', function () {
+            Venda.VerificarTipoBorda();
+            Venda.CalcularTotal();
+        });
+    },
+
+    VerificarTipoBorda: function () {
+        var tipoSelecionado = $('#tipoId option:selected').text().trim().toLowerCase();
+
+        if (tipoSelecionado != 'broto' && tipoSelecionado != 'selecione...') {
+            $('#Borda').show();
+        }
+        else {
+            $('#Borda').hide();
+            $('#bordaId').val('');
+        }
     },
 
     CarregarSelects: function (callback) {
@@ -51,20 +67,62 @@ var Venda = {
 
                         $('#pizzaId').html(html);
 
+                        // tipo -> borda -> acompanhamentos, em sequência, para o callback
+                        // só rodar quando todos os selects estiverem prontos
                         $.ajax({
-                            url: Config.API_URL + "/acompanhamentos",
+                            url: Config.API_URL + "/pizzas/tipo",
                             method: "GET",
-                            success: function (acompanhamentos) {
-                                Venda._acompanhamentos = acompanhamentos;
+                            success: function (tipo) {
+                                Venda._tipo = tipo;
 
-                                $('#categoriaAcompanhamento').val('');
-                                $('#acompanhamentoId').html('<option value="">Selecione uma categoria...</option>');
-                                $('#acompanhamentoId').prop('disabled', true);
+                                var html = '<option value="">Selecione...</option>';
 
-                                if (callback) callback();
+                                $.each(tipo, function (i, t) {
+                                    html += '<option value="' + t.id + '">' + t.nome + '</option>';
+                                });
+
+                                $('#tipoId').html(html);
+
+                                $.ajax({
+                                    url: Config.API_URL + "/pizzas/borda",
+                                    method: "GET",
+                                    success: function (borda) {
+                                        Venda._borda = borda;
+
+                                        var html = '<option value="">Selecione...</option>';
+
+                                        $.each(borda, function (i, b) {
+                                            html += '<option value="' + b.id + '" data-preco="' + b.valor + '">' +
+                                                b.nome + ' - R$ ' + parseFloat(b.valor).toFixed(2) +
+                                                '</option>';
+                                        });
+
+                                        $('#bordaId').html(html);
+
+                                        $.ajax({
+                                            url: Config.API_URL + "/acompanhamentos",
+                                            method: "GET",
+                                            success: function (acompanhamentos) {
+                                                Venda._acompanhamentos = acompanhamentos;
+
+                                                $('#categoriaAcompanhamento').val('');
+                                                $('#acompanhamentoId').html('<option value="">Selecione uma categoria...</option>');
+                                                $('#acompanhamentoId').prop('disabled', true);
+
+                                                if (callback) callback();
+                                            },
+                                            error: function () {
+                                                alert('Erro ao carregar acompanhamentos!');
+                                            }
+                                        });
+                                    },
+                                    error: function () {
+                                        alert('Erro ao carregar bordas!');
+                                    }
+                                });
                             },
                             error: function () {
-                                alert('Erro ao carregar acompanhamentos!');
+                                alert('Erro ao carregar tipos!');
                             }
                         });
                     },
@@ -161,10 +219,20 @@ var Venda = {
     },
 
     CalcularTotal: function () {
-        var precoPizza = parseFloat($('#pizzaId option:selected').data('preco')) || 0;
+        var precoPizza = parseFloat($('#pizzaId option:selected').attr('data-preco')) || 0;
         var quantidade = parseInt($('#quantidade').val()) || 0;
 
-        var total = precoPizza * quantidade;
+        var tipoSelecionado = $('#tipoId option:selected').text().trim().toLowerCase();
+        if (tipoSelecionado === 'broto') {
+            precoPizza = precoPizza / 2;
+        }
+
+        var precoBorda = 0;
+        if ($('#Borda').is(':visible') && $('#bordaId').val()) {
+            precoBorda = parseFloat($('#bordaId option:selected').attr('data-preco')) || 0;
+        }
+
+        var total = (precoPizza + precoBorda) * quantidade;
 
         $.each(Venda._itensAcompanhamentos, function (i, a) {
             total += a.preco * a.quantidade;
@@ -174,7 +242,7 @@ var Venda = {
     },
 
     Listar: function () {
-        $('#tabela-body').html('<tr><td colspan="8" class="loading">Carregando...</td></tr>');
+        $('#tabela-body').html('<tr><td colspan="10" class="loading">Carregando...</td></tr>');
 
         $.ajax({
             url: Config.API_URL + "/vendas",
@@ -197,6 +265,8 @@ var Venda = {
                     html += '<td>' + venda.id + '</td>';
                     html += '<td>' + (venda.nomeUsuario || venda.usuarioId) + '</td>';
                     html += '<td>' + (venda.nomePizza || venda.pizzaId) + '</td>';
+                    html += '<td>' + (venda.nomeTipo || '-') + '</td>';
+                    html += '<td>' + (venda.nomeBorda || '-') + '</td>';
                     html += '<td>' + acompanhamentos + '</td>';
                     html += '<td>' + venda.quantidade + '</td>';
                     html += '<td>R$ ' + parseFloat(venda.valorTotal).toFixed(2) + '</td>';
@@ -210,16 +280,17 @@ var Venda = {
                 });
 
                 if (html === '') {
-                    html = '<tr><td colspan="8" class="text-center text-muted">Nenhuma venda registrada</td></tr>';
+                    html = '<tr><td colspan="10" class="text-center text-muted">Nenhuma venda registrada</td></tr>';
                 }
 
                 $('#tabela-body').html(html);
             },
             error: function () {
-                $('#tabela-body').html('<tr><td colspan="8" class="text-center text-danger">Erro ao carregar vendas</td></tr>');
+                $('#tabela-body').html('<tr><td colspan="10" class="text-center text-danger">Erro ao carregar vendas</td></tr>');
             }
         });
     },
+
     BotaoStatus: function (venda) {
         var opcoes = [
             { id: '1', nome: 'Preparando' },
@@ -237,18 +308,18 @@ var Venda = {
     },
 
     AlterarStatus: function (id, statusId) {
-    $.ajax({
-        url: Config.API_URL + "/vendas/" + id + "/" + statusId,
-        method: "PUT",
-        success: function () {
-            // opcional: Venda.Listar();
-        },
-        error: function () {
-            alert('Erro ao atualizar o status');
-            Venda.Listar();
-        }
-    });
-},
+        $.ajax({
+            url: Config.API_URL + "/vendas/" + id + "/" + statusId,
+            method: "PUT",
+            success: function () {
+                // opcional: Venda.Listar();
+            },
+            error: function () {
+                alert('Erro ao atualizar o status');
+                Venda.Listar();
+            }
+        });
+    },
 
     btnNovo_OnClick: function () {
         $('#formVenda')[0].reset();
@@ -261,6 +332,7 @@ var Venda = {
         Venda.ListarAcompanhamentos();
 
         Venda.CarregarSelects(function () {
+            $('#Borda').hide();
             $('#modalVenda').modal('show');
             Venda.CalcularTotal();
         });
@@ -272,6 +344,8 @@ var Venda = {
         var venda = {
             usuarioId: parseInt($('#usuarioId').val()),
             pizzaId: parseInt($('#pizzaId').val()),
+            idTipo: parseInt($('#tipoId').val()),
+            idBorda: $('#bordaId').val() ? parseInt($('#bordaId').val()) : null,
             quantidade: parseInt($('#quantidade').val()),
             valorTotal: parseFloat($('#valorTotal').val()),
             acompanhamentos: Venda._itensAcompanhamentos.map(function (a) {
@@ -283,7 +357,7 @@ var Venda = {
             })
         };
 
-        if (!venda.usuarioId || !venda.pizzaId || !venda.quantidade || venda.quantidade < 1 || isNaN(venda.valorTotal)) {
+        if (!venda.usuarioId || !venda.pizzaId || !venda.idTipo || !venda.quantidade || venda.quantidade < 1 || isNaN(venda.valorTotal)) {
             alert('Preencha todos os campos corretamente!');
             return;
         }
@@ -317,7 +391,11 @@ var Venda = {
                     $('#vendaId').val(venda.id);
                     $('#usuarioId').val(venda.usuarioId);
                     $('#pizzaId').val(venda.pizzaId);
+                    $('#tipoId').val(venda.idTipo);
                     $('#quantidade').val(venda.quantidade);
+
+                    Venda.VerificarTipoBorda();
+                    $('#bordaId').val(venda.idBorda);
 
                     Venda._itensAcompanhamentos = [];
 
@@ -331,10 +409,12 @@ var Venda = {
                     });
 
                     Venda.ListarAcompanhamentos();
-                    Venda.CalcularTotal();
 
                     $('#modalVendaLabel').text('Editar Venda');
                     $('#modalVenda').modal('show');
+
+                    // depois do show: o preço da borda só conta com o campo visível
+                    Venda.CalcularTotal();
                 },
                 error: function () {
                     alert('Erro ao carregar venda!');
