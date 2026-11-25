@@ -1,3 +1,3 @@
 var Config = {
-    API_URL: "http://pizzaria-api.viniciusguedes.cloud/api"
+    API_URL: "https://pizzaria-api.viniciusguedes.cloud/api"
 };
