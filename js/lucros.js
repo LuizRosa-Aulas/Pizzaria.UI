@@ -3,7 +3,10 @@ $(document).ready(function () {
 });
 
 var Lucro = {
+    Init: function () {
+        Lucro.Listar();
 
+    },
     Listar: function () {
         $('#tabela-body').html('<tr><td colspan="5" class="loading">Carregando...</td></tr>');
 
@@ -13,10 +16,13 @@ var Lucro = {
             success: function (data) {
                 var html = '';
                 $.each(data, function (i, Lucro) {
+                    var dataFormatada = new Date(Lucro.dataVenda).toLocaleDateString('pt-BR');
                     html += '<tr>';
-                    html += '<td>' + Lucro.id + '</td>';
-                    html += '<td>R$ ' + parseFloat(Lucro.preco).toFixed(2) + '</td>';
-                    html += '<td>R$ ' + parseFloat(Lucro.Custo).toFixed(2) + '</td>';
+                    html += '<td>' + Lucro.vendaId + '</td>';
+                    html += '<td>R$ ' + parseFloat(Lucro.vendasValorTotal).toFixed(2) + '</td>';
+                    html += '<td>R$ ' + parseFloat(Lucro.custoTotal).toFixed(2) + '</td>';
+                    html += '<td>R$ ' + parseFloat(Lucro.lucro).toFixed(2) + '</td>';
+                    html += '<td>' +  dataFormatada + '</td>';
                     html += '</tr>';
                 });
                 if (html === '') {

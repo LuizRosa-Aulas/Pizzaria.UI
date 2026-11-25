@@ -32,7 +32,7 @@ var Venda = {
                         Venda._pizzas = pizzas;
                         var html = '<option value="">Selecione...</option>';
                         $.each(pizzas, function (i, p) {
-                            html += '<option value="' + p.id + '" data-preco="' + p.preco + '">' + p.nome + ' - R$ ' + parseFloat(p.preco).toFixed(2) + '</option>';
+                            html += '<option value="' + p.id + '" data-preco="' + p.preco + '" data-custo="' + p.custo + '">' + p.nome + ' - R$ ' + parseFloat(p.preco).toFixed(2) + '</option>';
                         });
                         $('#pizzaId').html(html);
 
@@ -46,8 +46,11 @@ var Venda = {
     CalcularTotal: function () {
         var precoStr = $('#pizzaId option:selected').data('preco');
         var preco = parseFloat(precoStr) || 0;
+        var custoStr = $('#pizzaId option:selected').data('custo');
+        var custo = parseFloat(custoStr) || 0;
         var qtd = parseInt($('#quantidade').val()) || 0;
         $('#valorTotal').val((preco * qtd).toFixed(2));
+        $('#custoTotal').val((custo * qtd).toFixed(2));
     },
 
     Listar: function () {
@@ -88,6 +91,7 @@ var Venda = {
         $('#formVenda')[0].reset();
         $('#vendaId').val('');
         $('#valorTotal').val('');
+        $('#custoTotal').val('');
         $('#modalVendaLabel').text('Nova Venda');
 
         Venda.CarregarSelects(function () {
@@ -101,7 +105,8 @@ var Venda = {
             usuarioId: parseInt($('#usuarioId').val()),
             pizzaId: parseInt($('#pizzaId').val()),
             quantidade: parseInt($('#quantidade').val()),
-            valorTotal: parseFloat($('#valorTotal').val())
+            valorTotal: parseFloat($('#valorTotal').val()),
+            custoTotal: parseFloat($('#custoTotal').val()),
         };
 
         if (!venda.usuarioId || !venda.pizzaId || !venda.quantidade || isNaN(venda.valorTotal)) {
@@ -151,6 +156,7 @@ var Venda = {
                     $('#pizzaId').val(venda.pizzaId);
                     $('#quantidade').val(venda.quantidade);
                     $('#valorTotal').val(parseFloat(venda.valorTotal).toFixed(2));
+                    $('#custoTotal').val(parseFloat(venda.custoTotal).toFixed(2));
                     $('#modalVendaLabel').text('Editar Venda');
                     $('#modalVenda').modal('show');
                 }
