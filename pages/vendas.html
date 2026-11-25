@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -25,6 +26,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="pizzas.html">Pizzas</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="acompanhamentos.html">Acompanhamentos</a></li>
                     <li class="nav-item"><a class="nav-link" href="usuarios.html">Usuarios</a></li>
                     <li class="nav-item"><a class="nav-link active" href="vendas.html">Vendas</a></li>
                 </ul>
@@ -46,7 +48,8 @@
                         <th>ID</th>
                         <th>Usuario</th>
                         <th>Pizza</th>
-                        <th>Qtd</th>
+                        <th>Acompanhamentos</th>
+                        <th>Qtd Pizza</th>
                         <th>Valor Total</th>
                         <th>Data</th>
                         <th>Acoes</th>
@@ -66,31 +69,78 @@
                     <h5 class="modal-title" id="modalVendaLabel">Nova Venda</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
+
                 <div class="modal-body">
                     <form id="formVenda">
                         <input type="hidden" id="vendaId">
+
                         <div class="mb-3">
                             <label for="usuarioId" class="form-label">Usuario</label>
                             <select class="form-select" id="usuarioId">
                                 <option value="">Selecione...</option>
                             </select>
                         </div>
+
                         <div class="mb-3">
                             <label for="pizzaId" class="form-label">Pizza</label>
                             <select class="form-select" id="pizzaId">
                                 <option value="">Selecione...</option>
                             </select>
                         </div>
+
                         <div class="mb-3">
-                            <label for="quantidade" class="form-label">Quantidade</label>
+                            <label for="quantidade" class="form-label">Quantidade de Pizzas</label>
                             <input type="number" class="form-control" id="quantidade" min="1" value="1">
                         </div>
+
+                        <hr>
+
+                        <h6>Adicionar Acompanhamentos</h6>
+
+                        <div class="mb-3">
+                            <label for="categoriaAcompanhamento" class="form-label">Categoria</label>
+                            <select class="form-select" id="categoriaAcompanhamento">
+                                <option value="">Selecione...</option>
+                                <option value="Porcoes">Porções</option>
+                                <option value="Refrigerantes">Refrigerantes</option>
+                                <option value="Sobremesas">Sobremesas</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="acompanhamentoId" class="form-label">Acompanhamento</label>
+                            <select class="form-select" id="acompanhamentoId" disabled>
+                                <option value="">Selecione uma categoria...</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="quantidadeAcompanhamento" class="form-label">Quantidade</label>
+                            <input type="number" class="form-control" id="quantidadeAcompanhamento" min="1" value="1">
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="button" class="btn btn-outline-danger" id="btnAdicionarAcompanhamento">
+                                <i class="bi bi-plus-lg"></i> Adicionar Acompanhamento
+                            </button>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Acompanhamentos da Venda</label>
+                            <ul class="list-group" id="listaAcompanhamentos">
+                                <li class="list-group-item text-muted">Nenhum acompanhamento adicionado.</li>
+                            </ul>
+                        </div>
+
+                        <hr>
+
                         <div class="mb-3">
                             <label for="valorTotal" class="form-label">Valor Total (R$)</label>
                             <input type="text" class="form-control" id="valorTotal" readonly>
                         </div>
                     </form>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-pizza" id="btnSalvar">Salvar</button>
