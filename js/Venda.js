@@ -5,13 +5,32 @@ $(document).ready(function () {
 var Venda = {
     _pizzas: [],
     _usuarios: [],
+    _tipo: [],
+    _borda: [],
 
     Init: function () {
         Venda.Listar();
         $('#btnNovo').on('click', Venda.btnNovo_OnClick);
         $('#btnSalvar').on('click', Venda.btnSalvar_OnClick);
-        $('#pizzaId, #quantidade').on('change', Venda.CalcularTotal);
+        $('#pizzaId, #quantidade, #tipoId, #bordaId').on('change', function() {
+            Venda.CalcularTotal();
+            Venda.VerificarTipoBorda();
+        });
     },
+
+    VerificarTipoBorda: function () {
+        var tipoSelecionado = $('#tipoId option:selected').text().trim().toLowerCase();
+
+        if (tipoSelecionado != 'broto' && tipoSelecionado != 'selecione...') {
+            $('#Borda').show();
+        }
+        else {
+            $('#Borda').hide();
+            $('#bordaId').val('');
+            Venda.CalcularTotal();
+        }
+    },
+
 
     CarregarSelects: function (callback) {
         $.ajax({
@@ -32,11 +51,40 @@ var Venda = {
                         Venda._pizzas = pizzas;
                         var html = '<option value="">Selecione...</option>';
                         $.each(pizzas, function (i, p) {
-                            html += '<option value="' + p.id + '" data-preco="' + p.preco + '">' + p.nome + ' - R$ ' + parseFloat(p.preco).toFixed(2) + '</option>';
+                            html += '<option value="' + p.id + '" data-preco="' + p.preco + '">' + p.nome + ' - R$ ' + parseFloat(p.preco ).toFixed(2) + '</option>';
                         });
                         $('#pizzaId').html(html);
+                         
+                        //tipo
+                        $.ajax({
+                            url: Config.API_URL + "/pizzas/tipo",
+                            method: "GET",
+                            success: function (tipo) {
+                                Venda._tipo = tipo;
+                                var html = '<option value="">Selecione...</option>';
+                                $.each(tipo, function (i, t) {
+                                    html += '<option value="' + t.id + '">' + t.nome + '</option>';
+                                });
+                                $('#tipoId').html(html);
+                                
+                            }
+                        });
+                        // sucesso tipo -> bordas
+                        $.ajax({
+                            url: Config.API_URL + "/pizzas/borda",
+                            method: "GET",
+                            success: function (borda) {
+                                Venda._borda = borda;
+                                var html = '<option value="">Selecione...</option>';
+                                $.each(borda, function (i, b) {
+                                    html += '<option value="' + b.id + '" data-preco="' + b.valor + '">' + b.nome + ' - R$ ' + parseFloat(b.valor).toFixed(2) + '</option>';
+                                });
+                                $('#bordaId').html(html);
+                                //sucesso borda -> esconde o select da borda e libera no change do tipo
 
-                        if (callback) callback();
+                                if (callback) callback();
+                            }
+                        });
                     }
                 });
             }
@@ -44,10 +92,20 @@ var Venda = {
     },
 
     CalcularTotal: function () {
-        var precoStr = $('#pizzaId option:selected').data('preco');
+        var precoStr = $('#pizzaId').find(':selected').attr('data-preco');
         var preco = parseFloat(precoStr) || 0;
         var qtd = parseInt($('#quantidade').val()) || 0;
-        $('#valorTotal').val((preco * qtd).toFixed(2));
+        var tipoSelecionado = $('#tipoId option:selected').text().trim().toLowerCase();
+        if (tipoSelecionado === 'broto') {
+            preco = preco / 2
+        }
+        var precoBorda = 0;
+        if ($('#Borda').is(':visible') && $('#bordaId').val()) {
+            var precoBordaStr = $('#bordaId').find(':selected').attr('data-preco');
+            precoBorda = parseFloat(precoBordaStr) || 0
+        }
+        var valorTotal = (preco + precoBorda) * qtd;
+        $('#valorTotal').val(valorTotal.toFixed(2));
     },
 
     Listar: function () {
@@ -64,6 +122,8 @@ var Venda = {
                     html += '<td>' + venda.id + '</td>';
                     html += '<td>' + (venda.nomeUsuario || venda.usuarioId) + '</td>';
                     html += '<td>' + (venda.nomePizza || venda.pizzaId) + '</td>';
+                    html += '<td>' + (venda.nomeTipo || venda.tipoId) + '</td>';
+                    html += '<td>' + (venda.nomeBorda || venda.bordaId) + '</td>';
                     html += '<td>' + venda.quantidade + '</td>';
                     html += '<td>R$ ' + parseFloat(venda.valorTotal).toFixed(2) + '</td>';
                     html += '<td>' + dataFormatada + '</td>';
@@ -91,6 +151,7 @@ var Venda = {
         $('#modalVendaLabel').text('Nova Venda');
 
         Venda.CarregarSelects(function () {
+            $('#Borda').hide();
             $('#modalVenda').modal('show');
         });
     },
@@ -100,11 +161,14 @@ var Venda = {
         var venda = {
             usuarioId: parseInt($('#usuarioId').val()),
             pizzaId: parseInt($('#pizzaId').val()),
+            idTipo: parseInt($('#tipoId').val()),
+            idBorda: $('#bordaId').val() ? parseInt($('#bordaId').val()) : null,
             quantidade: parseInt($('#quantidade').val()),
             valorTotal: parseFloat($('#valorTotal').val())
+
         };
 
-        if (!venda.usuarioId || !venda.pizzaId || !venda.quantidade || isNaN(venda.valorTotal)) {
+        if (!venda.usuarioId || !venda.pizzaId || !venda.idTipo || !venda.quantidade || isNaN(venda.valorTotal)) {
             alert('Preencha todos os campos corretamente!');
             return;
         }
@@ -149,8 +213,13 @@ var Venda = {
                     $('#vendaId').val(venda.id);
                     $('#usuarioId').val(venda.usuarioId);
                     $('#pizzaId').val(venda.pizzaId);
+                    $('#tipoId').val(venda.idTipo);
+                    $('#bordaId').val(venda.idBorda);
                     $('#quantidade').val(venda.quantidade);
                     $('#valorTotal').val(parseFloat(venda.valorTotal).toFixed(2));
+
+                    Venda.VerificarTipoBorda();
+
                     $('#modalVendaLabel').text('Editar Venda');
                     $('#modalVenda').modal('show');
                 }
