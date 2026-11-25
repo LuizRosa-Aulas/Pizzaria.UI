@@ -44,10 +44,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Usuario</th>
-                        <th>Pizza</th>
-                        <th>Qtd</th>
-                        <th>Valor Total</th>
+                        <th>Valor da Compra</th>
+                        <th>Custo de Produção</th>
+                        <th>Lucro Líquido</th>
                         <th>Data</th>
                         <th>Acoes</th>
                     </tr>
@@ -75,18 +74,21 @@
                                 <option value="">Selecione...</option>
                             </select>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="pizzaId" class="form-label">Pizza</label>
                             <select class="form-select" id="pizzaId">
                                 <option value="">Selecione...</option>
                             </select>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="quantidade" class="form-label">Quantidade</label>
                             <input type="number" class="form-control" id="quantidade" min="1" value="1">
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="valorTotal" class="form-label">Valor Total (R$)</label>
+                            <input type="text" class="form-control" id="valorTotal" readonly>
+                        <div class="mb-4">
+                            <label for="valorTotal" class="form-label">Lucro total (R$)</label>
                             <input type="text" class="form-control" id="valorTotal" readonly>
                         </div>
                     </form>

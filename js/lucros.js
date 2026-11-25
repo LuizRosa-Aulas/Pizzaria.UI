@@ -15,9 +15,8 @@ var Lucro = {
                 $.each(data, function (i, Lucro) {
                     html += '<tr>';
                     html += '<td>' + Lucro.id + '</td>';
-                    html += '<td>' + Lucro.nome + '</td>';
-                    html += '<td>' + Lucro.descricao + '</td>';
                     html += '<td>R$ ' + parseFloat(Lucro.preco).toFixed(2) + '</td>';
+                    html += '<td>R$ ' + parseFloat(Lucro.Custo).toFixed(2) + '</td>';
                     html += '</tr>';
                 });
                 if (html === '') {

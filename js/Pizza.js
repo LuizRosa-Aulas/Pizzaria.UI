@@ -53,10 +53,10 @@ var Pizza = {
             nome: $('#nome').val(),
             descricao: $('#descricao').val(),
             preco: parseFloat($('#preco').val()),
-            custoProducao: parseFloat($('#custoProducao').val())
+            custo: parseFloat($('#custo').val())
         };
 
-        if (!pizza.nome || !pizza.descricao || isNaN(pizza.preco) || isNaN(pizza.custoProducao) || pizza.custoProducao < 0) {
+        if (!pizza.nome || !pizza.descricao || isNaN(pizza.preco) || isNaN(pizza.custo) || pizza.custo < 0) {
             alert('Preencha todos os campos corretamente!');
             return;
         }
@@ -101,7 +101,7 @@ var Pizza = {
                 $('#nome').val(pizza.nome);
                 $('#descricao').val(pizza.descricao);
                 $('#preco').val(pizza.preco);
-                $('#custoProducao').val(pizza.custoProducao);
+                $('#custo').val(pizza.custo);
                 $('#modalPizzaLabel').text('Editar Pizza');
                 $('#modalPizza').modal('show');
             }
