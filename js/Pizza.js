@@ -22,6 +22,7 @@ var Pizza = {
                     html += '<td>' + pizza.id + '</td>';
                     html += '<td>' + pizza.nome + '</td>';
                     html += '<td>' + pizza.descricao + '</td>';
+                    html += '<td>' + pizza.qtd + '</td>';
                     html += '<td>R$ ' + parseFloat(pizza.preco).toFixed(2) + '</td>';
                     html += '<td>';
                     html += '<button class="btn btn-sm btn-warning me-1" onclick="Pizza.Editar(' + pizza.id + ')"><i class="bi bi-pencil"></i> Editar</button>';
