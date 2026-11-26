@@ -60,7 +60,7 @@ var Venda = {
                         var html = '<option value="">Selecione...</option>';
 
                         $.each(pizzas, function (i, p) {
-                            html += '<option value="' + p.id + '" data-preco="' + p.preco + '">' +
+                            html += '<option value="' + p.id + '" data-preco="' + p.preco + '" data-custo="' + p.custo + '">' +
                                 p.nome + ' - R$ ' + parseFloat(p.preco).toFixed(2) +
                                 '</option>';
                         });
@@ -220,6 +220,7 @@ var Venda = {
 
     CalcularTotal: function () {
         var precoPizza = parseFloat($('#pizzaId option:selected').attr('data-preco')) || 0;
+        var custoPizza = parseFloat($('#pizzaId option:selected').attr('data-custo')) || 0;
         var quantidade = parseInt($('#quantidade').val()) || 0;
 
         var tipoSelecionado = $('#tipoId option:selected').text().trim().toLowerCase();
@@ -239,6 +240,7 @@ var Venda = {
         });
 
         $('#valorTotal').val(total.toFixed(2));
+        $('#custoTotal').val((custoPizza * quantidade).toFixed(2));
     },
 
     Listar: function () {
@@ -326,6 +328,7 @@ var Venda = {
 
         $('#vendaId').val('');
         $('#valorTotal').val('');
+        $('#custoTotal').val('');
         $('#modalVendaLabel').text('Nova Venda');
 
         Venda._itensAcompanhamentos = [];
@@ -348,6 +351,7 @@ var Venda = {
             idBorda: $('#bordaId').val() ? parseInt($('#bordaId').val()) : null,
             quantidade: parseInt($('#quantidade').val()),
             valorTotal: parseFloat($('#valorTotal').val()),
+            custoTotal: parseFloat($('#custoTotal').val()) || 0,
             acompanhamentos: Venda._itensAcompanhamentos.map(function (a) {
                 return {
                     acompanhamentoId: a.id,
@@ -414,6 +418,7 @@ var Venda = {
                     $('#modalVenda').modal('show');
 
                     // depois do show: o preço da borda só conta com o campo visível
+                    // e o custo é recalculado a partir da pizza selecionada
                     Venda.CalcularTotal();
                 },
                 error: function () {
