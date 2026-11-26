@@ -78,6 +78,12 @@ body {
     color: #fff;
 }
 
+.btn-status {
+    margin-left: 5px;
+    width: auto;
+    display: inline;
+}
+
 /* ========== MODAL ========== */
 .modal-header {
     background-color: var(--cor-primaria);
