@@ -121,8 +121,10 @@ var Acompanhamento = {
             success: function () {
                 Acompanhamento.Listar();
             },
-            error: function () {
-                alert('Erro ao excluir acompanhamento');
+            error: function (xhr) {
+                // 409: a API explica por que não pode excluir (ex.: já tem vendas)
+                var mensagem = xhr.responseJSON && xhr.responseJSON.mensagem;
+                alert(mensagem || 'Erro ao excluir acompanhamento');
             }
         });
     }

@@ -115,8 +115,10 @@ var Usuario = {
             success: function () {
                 Usuario.Listar();
             },
-            error: function () {
-                alert('Erro ao excluir usuario');
+            error: function (xhr) {
+                // 409: a API explica por que não pode excluir (ex.: já tem vendas)
+                var mensagem = xhr.responseJSON && xhr.responseJSON.mensagem;
+                alert(mensagem || 'Erro ao excluir usuario');
             }
         });
     }

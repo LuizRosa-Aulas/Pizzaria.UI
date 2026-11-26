@@ -118,8 +118,10 @@ var Pizza = {
             success: function () {
                 Pizza.Listar();
             },
-            error: function () {
-                alert('Erro ao excluir pizza');
+            error: function (xhr) {
+                // 409: a API explica por que não pode excluir (ex.: já tem vendas)
+                var mensagem = xhr.responseJSON && xhr.responseJSON.mensagem;
+                alert(mensagem || 'Erro ao excluir pizza');
             }
         });
     }
