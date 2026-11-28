@@ -148,3 +148,135 @@ footer {
     width: 100%;
     font-size: 0.85rem;
 }
+
+.content-home {
+    padding-bottom: 40px;
+}
+
+.cardapio {
+    margin-bottom: 50px;
+}
+
+.cardapio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.cardapio-header h2 {
+    color: var(--cor-primaria);
+    font-weight: 700;
+    margin: 0;
+}
+
+.cardapio-contador {
+    background-color: #ffebee;
+    color: var(--cor-primaria-escura);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 4px 14px;
+    border-radius: 20px;
+}
+
+.cardapio-contador:empty {
+    display: none;
+}
+
+.cardapio-vazio {
+    text-align: center;
+    padding: 50px 20px;
+    color: #888;
+}
+
+.cardapio-vazio i {
+    font-size: 3rem;
+    color: var(--cor-primaria);
+}
+
+.secao-titulo {
+    color: #555;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.card-pizza {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: var(--cor-card);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-pizza:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 26px rgba(211, 47, 47, 0.22);
+}
+
+.card-pizza-topo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    background: linear-gradient(135deg, var(--cor-primaria) 0%, #ff7043 100%);
+}
+
+.card-pizza-emoji {
+    font-size: 3.6rem;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+    transition: transform 0.4s;
+}
+
+.card-pizza:hover .card-pizza-emoji {
+    transform: rotate(20deg) scale(1.1);
+}
+
+.card-pizza .card-body {
+    padding: 18px 18px 8px;
+}
+
+.card-pizza-nome {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.card-pizza-ingredientes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.badge-ingrediente {
+    background-color: #fff3e0;
+    color: #8d4b00;
+    font-size: 0.78rem;
+    padding: 3px 10px;
+    border-radius: 12px;
+}
+
+.card-pizza-rodape {
+    background: transparent;
+    border-top: 1px dashed #eee;
+    padding: 12px 18px 16px;
+}
+
+.card-pizza-preco {
+    color: var(--cor-primaria);
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+@media (max-width: 575.98px) {
+    .card-pizza-topo {
+        height: 100px;
+    }
+
+    .cardapio-header h2 {
+        font-size: 1.5rem;
+    }
+}
