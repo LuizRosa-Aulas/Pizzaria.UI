@@ -41,12 +41,23 @@
     </nav>
 
     <!-- CONTEUDO -->
-    <div class="container content">
+    <div class="container content content-home">
         <div class="text-center mb-5">
             <h1 class="display-5 fw-bold" style="color: var(--cor-primaria);">Sistema de Gerenciamento</h1>
             <p class="text-muted fs-5">Gerencie pizzas, acompanhamentos, usuarios e vendas da sua pizzaria</p>
         </div>
 
+        <section class="cardapio" id="cardapio">
+            <div class="cardapio-header">
+                <h2><i class="bi bi-stars"></i> Nosso Cardapio</h2>
+                <span class="cardapio-contador" id="cardapioContador"></span>
+            </div>
+            <div class="row g-4" id="listaPizzas">
+                <div class="col-12 loading">Carregando cardapio...</div>
+            </div>
+        </section>
+
+        <h4 class="secao-titulo">Acesso rapido</h4>
         <div class="row g-4 justify-content-center">
             <div class="col-md-3">
                 <a href="pages/pizzas.html" class="card card-home">
@@ -101,7 +112,10 @@
         <span>Pizzaria &copy; 2025 - Sistema de Gerenciamento</span>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/Config.js"></script>
+    <script src="js/Home.js"></script>
 </body>
 </html>
